@@ -13,7 +13,7 @@ const register = async (req, res) => {
     const compPassword = await bcrypt.compare(password, hashedPassword);
     console.log(compPassword);
 
-    const token = jwt.sign(email, process.env.SECRET_KEY,{expiresIn:'1h'});
+    const token = jwt.sign(email, process.env.SECRET_KEY);
     console.log(token);
 
     const user = await userModel.create({
@@ -45,30 +45,45 @@ const register = async (req, res) => {
   }
 };
 const login = async (req, res) => {
-  const {email,password} = req.body
-  // console.log(input)
-  
-  const { token } = req.cookies;
-  console.log(token);
-  try {
-    const verifyToken = jwt.verify(token, process.env.SECRET_KEY);
+  const { email, password } = req.body;
 
-    if (!verifyToken && compPass) {
-       res.status(401).send({
-        message: "Unauthorized User",
-      });
+  const user = await userModel.findOne({ email });
 
-      res.status(200).send({
-        message: "user successfully login!",
-        error: error.message,
-      });
-    }
-  } catch (error) {
-    res.status(400).send({
-      message: "something went wrong with server",
-      error: error.message,
+  console.log(user);
+
+  const isValidatePassword = await bcrypt.compare(password, user?.password);
+  console.log(isValidatePassword);
+
+  if (!isValidatePassword) {
+    return res.status(400).json({
+      message: "invalid credentials",
     });
   }
+
+
+res.status(200).json({message:"login sucessfully"})
+
+  // const { token } = req.cookies;
+  // console.log(token);
+  // try {
+  //   const verifyToken = jwt.verify(token, process.env.SECRET_KEY);
+
+  //   if (!verifyToken) {
+  //      res.status(401).send({
+  //       message: "Unauthorized User",
+  //     });
+
+  //     res.status(200).send({
+  //       message: "user successfully login!",
+  //       error: error.message,
+  //     });
+  //   }
+  // } catch (error) {
+  //   res.status(400).send({
+  //     message: "something went wrong with server",
+  //     error: error.message,
+  //   });
+  // }
 };
 const logout = () => {};
 const forgotPassword = () => {};
