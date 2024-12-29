@@ -34,7 +34,7 @@ const register = async (req, res) => {
   // console.log(isUserExist)
 
   if (isUserExist) {
-    return  res.status(400).json({ message: "User already exists" });
+    return  res.status(409).json({ message: "User already exists" });
   }
 
   const hashedPassword = await hashPassword(password);
@@ -44,9 +44,10 @@ const token = await generateAuthToken(email)
     email,
     password: hashedPassword,
   });
+  
 
   try {
-    res.status(200).json({ message: "User created successfully", user,token });
+    res.status(201).json({ message: "User created successfully", user,token });
   } catch (error) {
     res.status(404).send({
       message: "something went wrong",

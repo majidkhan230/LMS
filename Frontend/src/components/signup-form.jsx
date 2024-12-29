@@ -10,12 +10,20 @@ import {
 } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import { Link } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
+import { postReq } from "@/api/axios"
 
 export function SignupForm({
   className,
   ...props
 }) {
+
+
+  const navigate = useNavigate()
+  
+
+
+
   const {
     register,
     handleSubmit,
@@ -23,8 +31,14 @@ export function SignupForm({
     formState: { errors },
   } = useForm()
 
-  const onSubmit = (data) => {
+  const onSubmit =async (data) => {
     console.log(data)
+   const res  = await postReq('/auth/register',data)
+    console.log(res)
+    const userData = res?.data?.user
+    if(userData){
+      navigate('/home')
+    }
 
   }
   return (
