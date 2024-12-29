@@ -113,24 +113,44 @@ This document provides details about the available routes in the backend, includ
     }
     ```
 
----
 
-### 5. **Forgot Password**
-- **Endpoint**: `/reset`
-- **Method**: `POST`
-- **Description**: Initiates a password reset process for the user.
+### 6. **Update User Password**
+- **Endpoint**: `/profile`
+- **Method**: `PUT`
+- **Description**: Allows an authenticated user to update their password. The user's ID is determined through the authentication token.
+- **Authorization**: Requires a valid token (handled by middleware `authMiddleware.authUser`).
 - **Request Body**:
-  - To be implemented in the future.
+  ```json
+  {
+    "password": "string"
+  }
+  ```
 - **Response**:
-  - To be implemented in the future.
-
----
-
-## **Authorization and Middleware**
-### **Middleware**
-- **`authMiddleware.authUser`**:
-  - Validates the provided token and attaches the authenticated user's information to the `req.user` object.
-  - Ensures that protected routes can only be accessed by logged-in users.
+  - **Success** (200):
+    ```json
+    {
+      "message": "Password reset successfully",
+      "user": {
+        "_id": "string",
+        "fullName": "string",
+        "email": "string",
+        "password": "hashed_password"
+      }
+    }
+    ```
+  - **Error** (404):
+    ```json
+    {
+      "message": "User not found"
+    }
+    ```
+  - **Error** (400 or other):
+    ```json
+    {
+      "message": "An error occurred",
+      "error": "string (if applicable)"
+    }
+    ```
 
 ---
 
@@ -138,7 +158,7 @@ This document provides details about the available routes in the backend, includ
 - **400**: Bad Request (e.g., missing fields in the request body).
 - **401**: Unauthorized (e.g., invalid token or invalid credentials).
 - **403**: Forbidden (e.g., server-side issues).
-- **404**: Not Found (e.g., invalid route or resource).
+- **404**: Not Found (e.g., user not found).
 
 ---
 
@@ -148,24 +168,15 @@ To test these routes:
 2. Ensure a valid `.env` file with a secret key (`SECRET_KEY`) for JWT.
 3. Start the server and ensure your database is running.
 
-### **Example cURL Commands**
-1. **Register**:
+### **Example cURL Command**
+1. **Update Password**:
    ```bash
-   curl -X POST http://localhost:5000/register \
+   curl -X PUT http://localhost:5000/profile \
+   -H "Authorization: Bearer <your-token-here>" \
    -H "Content-Type: application/json" \
-   -d '{"fullName": "John Doe", "email": "john@example.com", "password": "password123"}'
+   -d '{"password": "newPassword123"}'
    ```
-2. **Login**:
-   ```bash
-   curl -X POST http://localhost:5000/login \
-   -H "Content-Type: application/json" \
-   -d '{"email": "john@example.com", "password": "password123"}'
-   ```
-3. **Profile**:
-   ```bash
-   curl -X GET http://localhost:5000/profile \
-   -H "Authorization: Bearer <your-token-here>"
-   ```
+
 ---
 
 ## **Contact**
