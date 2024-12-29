@@ -12,7 +12,7 @@ const authUser = async (req, res, next) => {
   try {
     const decoded = await jwt.verify(token, process.env.SECRET_KEY);
     // console.log(decoded)
-    const user = await userModel.findOne({ email: decoded});
+    const user = await userModel.findOne({ email: decoded}).select('-password');
     // console.log(user)
     req.user = user;
     return next();

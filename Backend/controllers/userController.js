@@ -91,7 +91,36 @@ const logout = (req, res) => {
 
 
 
-const forgotPassword = (req, res) => {};
+const forgotPassword = async(req, res) => {
+  // const {fullName, email,password} = req.body
+  // console.log(fullName,email ,password)
+  // res.status(200).json(req.user)
+  // console.log(req.user._id)
+
+  const user = await userModel.findOne({ _id: req.user._id})
+  // console.log(user)
+
+  
+  if(!user){
+    return res.status(404).json({ message: "User not found" })
+  }
+
+
+
+
+
+  // const newPassword = Math.random().toString(36).substr(2, 10);
+  const hashedPassword = await hashPassword(req.body.password);
+
+  if(user){
+    user.password = hashedPassword || user.password
+   const updatedUser =  await user.save()
+    res.status(200).json(
+      { message: "Password reset successfully", user: updatedUser }
+    )
+  }
+  
+};
 
 const userController = { register, login, getUserProfile,logout, forgotPassword };
 
