@@ -38,7 +38,7 @@ const register = async (req, res) => {
   }
 
   const hashedPassword = await hashPassword(password);
-
+const token = await generateAuthToken(email)
   const user = await userModel.create({
     fullName,
     email,
@@ -46,7 +46,7 @@ const register = async (req, res) => {
   });
 
   try {
-    res.status(200).json({ message: "User created successfully", user });
+    res.status(200).json({ message: "User created successfully", user,token });
   } catch (error) {
     res.status(404).send({
       message: "something went wrong",
@@ -54,10 +54,45 @@ const register = async (req, res) => {
     });
   }
 };
-const login = (req, res) => {};
-const logout = (req, res) => {};
+
+
+const login = async(req, res) => {
+  const { email, password } = req.body;
+  if (!email ||!password) {
+    return res.status(400).json({ message: "All fields are required" });
+  }
+  const user = await userModel.findOne({ email });
+  if (!user) {
+    return res.status(401).json({ message: "Invalid credentials" });
+  }
+  const isPasswordValid = await comparePassword(password, user.password);
+  if (!isPasswordValid) {
+    return res.status(400).json({ message: "Invalid credentials" });
+  }
+  const token = await generateAuthToken(email);
+try {
+  res.cookie("token", token);
+  res.json({ message: "Logged in successfully", user, token });
+  
+} catch (error) {
+  res.status(403).json({ message: "something went wrong with server",error:error.message });
+}
+};
+
+
+const getUserProfile = (req, res,next) => {
+  res.status(200).json(req.user)
+}
+
+const logout = (req, res) => {
+  res.clearCookie("token");
+  res.json({ message: "Logged out successfully" });
+};
+
+
+
 const forgotPassword = (req, res) => {};
 
-const userController = { register, login, logout, forgotPassword };
+const userController = { register, login, getUserProfile,logout, forgotPassword };
 
 export default userController;
