@@ -33,7 +33,9 @@ export function LoginForm({
   const res  = await postReq('/auth/login',data)
   console.log(res)
   const userData = res?.data?.user 
+  
     if(userData){
+      // localStorage.setItem('token',res?.data?.token)
       navigate('/home')
     }
 

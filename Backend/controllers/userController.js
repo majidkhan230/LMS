@@ -72,7 +72,8 @@ const login = async(req, res) => {
   }
   const token = await generateAuthToken(email);
 try {
-  res.cookie("token", token);
+  
+  res.cookie("token", token,);
   res.json({ message: "Logged in successfully", user, token });
   
 } catch (error) {
