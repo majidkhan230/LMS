@@ -3,6 +3,7 @@ import cors from 'cors'
 import dotenv from 'dotenv'
 import userRoutes from './routes/userRoutes.js'
 import cookieParser from 'cookie-parser'
+import connectDB from './db/configDB.js'
 
 const app = express()
 dotenv.config()
@@ -24,7 +25,14 @@ app.get('/',(req,res)=>{
 
 app.use('/auth',userRoutes)
 
+connectDB()
 
 
+const PORT =process.env.PORT || 8080
 
-export default app
+app.listen(PORT,()=>{
+    console.log(`server is sucessfully running on ${PORT}`)
+})
+
+
+// export default app
