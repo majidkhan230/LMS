@@ -11,6 +11,7 @@ import {
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { putReq } from "@/api/axios";
 
 export function ForgotPasswordForm({ className, ...props }) {
   const {
@@ -21,14 +22,21 @@ export function ForgotPasswordForm({ className, ...props }) {
 
   const onSubmit = async (data) => {
     console.log("Submitted Data:", data);
+
+    const res = await putReq('/auth/reset',data)
+    console.log(res)
+
+
+    
+    
     // Add your API request logic here
-    try {
-      // Simulate an API request
-      await new Promise((resolve) => setTimeout(resolve, 2000));
-      alert("Password reset link sent to your email.");
-    } catch (error) {
-      console.error("Error sending password reset email:", error);
-    }
+    // try {
+    //   // Simulate an API request
+    //   await new Promise((resolve) => setTimeout(resolve, 2000));
+    //   alert("Password reset link sent to your email.");
+    // } catch (error) {
+    //   console.error("Error sending password reset email:", error);
+    // }
   };
 
   return (

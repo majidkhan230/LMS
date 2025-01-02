@@ -57,8 +57,8 @@ export function SignupForm({
           <form  onSubmit={handleSubmit(onSubmit)}>
             <div className="flex flex-col gap-6">
               <div className="grid gap-2">
-                <Label htmlFor="fullName">FullName</Label>
-              <Input id="fullName" type="fullName" placeholder="fullName" {...register("fullName")}  />
+                <Label htmlFor="fullName">Full Name</Label>
+              <Input id="fullName" type="fullName" placeholder="full name" {...register("fullName")}  />
               </div>
               <div className="grid gap-2">
                 <Label htmlFor="email">Email</Label>
@@ -67,11 +67,10 @@ export function SignupForm({
               <div className="grid gap-2">
                 <div className="flex items-center">
                   <Label htmlFor="password">Password</Label>
-                  <a
-                    href="#"
+                  <Link to={'/reset'}
                     className="ml-auto inline-block text-sm underline-offset-4 hover:underline">
                     Forgot your password?
-                  </a>
+                  </Link>
                 </div>
                 <Input id="password" type="password" {...register("password")} />
               </div>

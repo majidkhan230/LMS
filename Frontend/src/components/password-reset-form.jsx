@@ -12,17 +12,17 @@ export function PasswordResetForm({ onSubmit }) {
     formState: { errors, isSubmitting },
   } = useForm();
 
-  const newPassword = watch("newPassword");
+  const password = watch("password");
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-6">
       <div className="grid gap-2">
-        <Label htmlFor="newPassword">New Password</Label>
+        <Label htmlFor="password">New Password</Label>
         <Input
-          id="newPassword"
+          id="password"
           type="password"
           placeholder="Enter new password"
-          {...register("newPassword", {
+          {...register("password", {
             required: "New password is required",
             minLength: {
               value: 6,
@@ -30,8 +30,8 @@ export function PasswordResetForm({ onSubmit }) {
             },
           })}
         />
-        {errors.newPassword && (
-          <p className="text-red-500 text-sm">{errors.newPassword.message}</p>
+        {errors.password && (
+          <p className="text-red-500 text-sm">{errors.password.message}</p>
         )}
       </div>
 
@@ -44,7 +44,7 @@ export function PasswordResetForm({ onSubmit }) {
           {...register("confirmPassword", {
             required: "Confirm password is required",
             validate: (value) =>
-              value === newPassword || "Passwords do not match",
+              value === password || "Passwords do not match",
           })}
         />
         {errors.confirmPassword && (

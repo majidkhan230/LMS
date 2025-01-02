@@ -7,7 +7,8 @@ userRoutes.post('/register', userController.register)
 userRoutes.post('/login',userController.login)
 userRoutes.get('/profile',authMiddleware.authUser,userController.getUserProfile)
 userRoutes.post('/logout',userController.logout)
-userRoutes.put('/profile',authMiddleware.authUser,userController.forgotPassword)
+userRoutes.put('/reset',userController.forgotPassword)
+userRoutes.put('/reset/:token',userController.resetPassword)
 
 
 

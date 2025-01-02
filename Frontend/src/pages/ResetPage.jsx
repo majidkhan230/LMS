@@ -1,18 +1,21 @@
 import React from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { PasswordResetForm } from "@/components/password-reset-form";
+import { putReq } from "@/api/axios";
+import { useParams } from "react-router-dom";
 
 export default function ResetPasswordPage() {
+
+  const {token} = useParams()
+
+  console.log(token)
+
   const handlePasswordReset = async (data) => {
-    console.log("Password Reset Data:", data);
-    // Replace with your API call
-    try {
-      // Simulate an API request
-      await new Promise((resolve) => setTimeout(resolve, 2000));
-      alert("Password reset successfully.");
-    } catch (error) {
-      console.error("Error resetting password:", error);
-    }
+
+    console.log(data)
+const res  =     await putReq(`/auth/reset/${token}`,data)
+console.log(res)
+
   };
 
   return (

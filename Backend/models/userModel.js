@@ -11,6 +11,10 @@ const userSchema = new Schema(
     password: {
       type: String,
     },
+    resetPasswordToken:{
+      type: String,
+      expires: Date.now() + 1 * 60 * 60 * 1000
+    }
   },
   { timestamps: true }
 );
